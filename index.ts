@@ -3,11 +3,29 @@
 import inquirer from "inquirer";
 import chalk from "chalk";
 
-let marks = 0;
 
-console.log(chalk.bold.bgGreen
-    ("WELCOME TO ERUM WARIS'S QUIZ APP"));
-do{
+
+async function QuizApp ()  {
+
+    console.log(chalk.bold.bgGreen
+        ("WELCOME TO ERUM WARIS'S QUIZ APP"));
+
+        let UserName = await inquirer.prompt(
+            {
+                name : "userName",
+                type: "input",
+                message :"Enter your Name:"
+            }
+        )
+
+        let marks : number = 0;
+
+        let condition : boolean = true;
+
+        console.log(chalk.bgRed.yellowBright("Let's Get Started"));
+        
+
+        while(condition){
 const Quizzez  = await inquirer.prompt([
     {
         name:"Quiz_1",
@@ -17,7 +35,7 @@ const Quizzez  = await inquirer.prompt([
             "2.const age: number = 30",
             "3.var age: number = 30",
             "4.let age: number; age = 30"
-        ],
+        ], 
         message:chalk.green("Q1:Which of the following statements correctly declares a variable age and initializes it with the value 30 in TypeScript?"),
     
     },
@@ -67,16 +85,10 @@ const Quizzez  = await inquirer.prompt([
         ] ,
         message:chalk.cyan("Q5:What is the first step in setting up a TypeScript environment in a new project?")
     },
-    {
-        name:"Question",
-        type:"list",
-        choices:[
-            "yes",
-            "No"
-        ],
-        message:"Do you want to carry on to  attempt QUIZZEZ? "
-    },
+    
 ])
+
+    
 if(Quizzez.Quiz_1 === "1.let age = 30"){
     console.log(chalk.yellow("A1:Correct Answer,Beacause we can reassign age to let if we select const option it can't be reassign"));
     marks += 10;
@@ -87,7 +99,7 @@ if(Quizzez.Quiz_2 === "2.string"){
     console.log(chalk.green("A2:Correct Answer,Beacause when string is going to join with number the type will be string b/c concatination occured"));
      marks += 10;
 } 
-else { console.log("Best of luck for next time");
+else { console.log("Best of luck for next time")};
 
 if(Quizzez.Quiz_3 === "1.const PI: number = 3.14"){
 
@@ -108,16 +120,27 @@ if(Quizzez.Quiz_5 === "1.Installing TypeScript globally using npm"){
 } else { console.log("Best of luck for next time");}
 
 
-   console.log(chalk.bgRed.black(`congratulations your obtained  marks are :${marks}`));
-   
-if(Quizzez.Question === "No") {
+   console.log(chalk.bgRed.black(`congratulations ${UserName.userName}! your obtained  marks are :${marks}`));
+
+   let Ask = await inquirer.prompt(
+   {
+    name:"Question",
+    type:"confirm",
+    message:"Do you want to carry on to  attempt QUIZZEZ? ",
+    default:false
+},
+   )   
+   if(Ask.Question === "false") {
     
-    console.log(chalk.bgGray("you can enjoy QUIZZEZ"));
-        continue;
-} else {
     
     (chalk.bgBlue("Exited ! Thanks for using"));
-    break;
+    return;
 }
+else {
+    marks = 0; //Reset marks for the new Quiz attempt
 }
-}while(true)
+
+        }
+}
+
+QuizApp()
